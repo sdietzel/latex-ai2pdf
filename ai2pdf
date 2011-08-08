@@ -11,12 +11,50 @@ on SaveFilesAsPDF(aFile)
 end SaveFilesAsPDF
 
 on run argv
-	-- Start Illustrator
-	tell application "Adobe Illustrator"
-		activate
-	end tell
-	
 	set aFile to item 1 of argv
 	
-	SaveFilesAsPDF(aFile)
+	-- create file object for AI and get modification date
+	tell application "Finder"
+		set aPosix to POSIX file aFile as alias
+		set aDate to modification date of aPosix
+	end tell
+	
+	-- create file object for PDF
+	set file_info to (info for aPosix)
+	set file_name to name of file_info
+	tell application "Finder"
+		set file_path to container of aPosix as text
+	end tell
+	set the_ext to name extension of file_info
+	set file_name to text 1 thru -((length of the_ext) + 2) of file_name
+
+	set pFile to file_path & file_name & ".pdf"
+
+	set compile to false
+		
+	try
+		tell application "Finder"
+			set pFileRef to file pFile
+			set pDate to modification date of pFileRef
+		end tell
+		
+		-- compare modification dates
+		if aDate > pDate then
+			set compile to true
+		end if
+		
+	on error -- pdf not found
+		set compile to true
+	end try
+	
+	if compile then
+		-- Start Illustrator
+		tell application "Adobe Illustrator"
+			activate
+		end tell
+		
+		SaveFilesAsPDF(POSIX path of aPosix)
+	else
+		"Skipping up to date PDF \"" & pFile & "\""
+	end if
 end run

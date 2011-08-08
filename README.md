@@ -22,6 +22,11 @@ Usage
 
 Look at ``ai2pdf.tex`` for a minimal example. ``ai2pdf`` redefines the ``\includegraphics`` command. Whenever you include a file that exists with a ``.ai`` extension, Adobe Illustrator is called and the file is exported to PDF. You don't need any extra commands in your tex source. Just use ``\includegraphics`` as usual.
 
+``ai2pdf`` uses the file modification date to decide whether the PDF for an AI
+file needs to be created/updated. Only if the PDF file does not exist or the
+modification date of the AI is newer than the PDF's, Illustrator is called to
+update the PDF file.
+
 **Note:** You need to run ``pdflatex`` with the ``--shell-escape`` parameter when compiling. Otherwise, the package is not able to execute the ``ai2pdf`` conversion tool from within LaTeX.
 
 Using in Teams
@@ -39,5 +44,4 @@ out of date.
 
 TODO
 ----
- * Enhance ``ai2pdf`` to recognize whether conversion is *necessary*: The script should check whether a PDF version of a given AI file already exists, and, if so, should only re-export if the file dates differ.
  * Make a Windows version of ``ai2pdf`` using VBA.

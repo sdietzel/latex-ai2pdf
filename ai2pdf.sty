@@ -43,7 +43,7 @@
 \newcommand\aitopdf[1]{%
 \typeout{Converting #1.ai to PDF...}%
 \IfFileExists{#1.ai}{
-\immediate\write18{ai2pdf $(pwd)/#1.ai}
+\immediate\write18{ai2pdf #1.ai}
 }{}
 }
 
