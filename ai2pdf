@@ -1,0 +1,22 @@
+#!/usr/bin/osascript
+
+on SaveFilesAsPDF(aFile)
+	-- tell application "Finder" to set fileName to name of aFile
+	-- set newFilePath to fileName
+	tell application "Adobe Illustrator"
+		open aFile
+		save current document in file aFile as pdf with options {class:PDF save options, acrobat layers:true, compatibility:Acrobat 6, preserve editability:false, font subset threshold:0.0}
+		close current document saving no
+	end tell
+end SaveFilesAsPDF
+
+on run argv
+	-- Start Illustrator
+	tell application "Adobe Illustrator"
+		activate
+	end tell
+	
+	set aFile to item 1 of argv
+	
+	SaveFilesAsPDF(aFile)
+end run

@@ -1,0 +1,67 @@
+% Script to automatically convert AI figures to PDF.
+% Install: Put "ai2pdf" somewhere in your $PATH
+% Usage: Use includegraphics as usual. All .ai files will be converted to PDF when pdflatex is called.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ai2pdf}[2011/08/08 v0.1 Converts AI filed to PDF during compilation]
+
+% Detect whether program exists; copied from minted package ------------
+\RequirePackage{ifplatform}
+\RequirePackage{ifthen}
+\RequirePackage{calc}
+
+\ifwindows
+  \providecommand\DeleteFile[1]{\immediate\write18{del #1}}
+\else
+  \providecommand\DeleteFile[1]{\immediate\write18{rm #1}}
+\fi
+\newboolean{AppExists}
+\providecommand\TestAppExists[1]{
+  \ifwindows
+    \DeleteFile{\jobname.aex}
+    \immediate\write18{for \string^\@percentchar i in (#1.exe #1.bat #1.cmd)
+      do set >\jobname.aex <nul: /p x=\string^\@percentchar \string~$PATH:i>>\jobname.aex} %$
+    \newread\@appexistsfile
+    \immediate\openin\@appexistsfile\jobname.aex
+    \expandafter\def\expandafter\@tmp@cr\expandafter{\the\endlinechar}
+    \endlinechar=-1\relax
+    \readline\@appexistsfile to \@apppathifexists
+    \endlinechar=\@tmp@cr
+    \ifthenelse{\equal{\@apppathifexists}{}}
+     {\AppExistsfalse}
+     {\AppExiststrue}
+    \immediate\closein\@appexistsfile
+    \DeleteFile{\jobname.aex}
+\immediate\typeout{file deleted}
+  \else
+    \immediate\write18{which -s #1 && touch \jobname.aex}
+    \IfFileExists{\jobname.aex}
+     {\AppExiststrue
+      \DeleteFile{\jobname.aex}}
+     {\AppExistsfalse}
+  \fi}
+% ----------------------------------------------------------------------
+
+
+\newcommand\aitopdf[1]{%
+\typeout{Converting #1.ai to PDF...}%
+\IfFileExists{#1.ai}{
+\immediate\write18{ai2pdf $(pwd)/#1.ai}
+}{}
+}
+
+\RequirePackage{graphicx}
+
+\let\oldincludegraphics=\includegraphics
+\renewcommand\includegraphics[2][]{%
+\aitopdf{#2}
+\oldincludegraphics[#1]{#2}
+}
+
+% Test whether ai2pdf is callable, give explanation if not
+
+\TestAppExists{ai2pdf}
+\ifAppExists\else
+    \PackageError{ai2pdf}
+     {You must put `ai2pdf' in your $PATH. Also, you must call pdflatex with the --shell-escape option for external program calls to work}
+\fi
