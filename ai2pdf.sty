@@ -6,17 +6,14 @@
 \ProvidesPackage{ai2pdf}[2011/08/08 v0.1 Converts AI filed to PDF during compilation]
 
 % Detect whether program exists; copied from minted package ------------
-\RequirePackage{ifplatform}
 \RequirePackage{ifthen}
 \RequirePackage{calc}
+\RequirePackage{ifplatform}
 
-\ifwindows
-  \providecommand\DeleteFile[1]{\immediate\write18{del #1}}
-\else
-  \providecommand\DeleteFile[1]{\immediate\write18{rm #1}}
-\fi
-\newboolean{AppExists}
-\providecommand\TestAppExists[1]{
+\providecommand\DeleteFile[1]{\immediate\write18{rm #1}}
+
+\newboolean{AiToPdfExists}
+\providecommand\TestAiToPdfExists[1]{
   \ifwindows
     \DeleteFile{\jobname.aex}
     \immediate\write18{for \string^\@percentchar i in (#1.exe #1.bat #1.cmd)
@@ -36,9 +33,9 @@
   \else
     \immediate\write18{which -s #1 && touch \jobname.aex}
     \IfFileExists{\jobname.aex}
-     {\AppExiststrue
+     {\AiToPdfExiststrue
       \DeleteFile{\jobname.aex}}
-     {\AppExistsfalse}
+     {\AiToPdfExistsfalse}
   \fi}
 % ----------------------------------------------------------------------
 
@@ -60,8 +57,8 @@
 
 % Test whether ai2pdf is callable, give explanation if not
 
-\TestAppExists{ai2pdf}
-\ifAppExists\else
+\TestAiToPdfExists{ai2pdf}
+\ifAiToPdfExists\else
     \PackageError{ai2pdf}
      {You must put `ai2pdf' in your $PATH. Also, you must call pdflatex with the --shell-escape option for external program calls to work}
 \fi
