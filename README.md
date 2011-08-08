@@ -12,7 +12,7 @@ Installation
 ------------
 
  1. Put ``ai2pdf`` (without extension) somewhere into your ``$PATH``, e.g., ``/usr/local/bin``
- 2. Put ``ai2pdf.sty`` in your local texmf tree, e.g., ``/usr/local/texlive/texmf-local/tex/latex/ai2pdf``
+ 2. Put ``ai2pdf.sty`` in it's own directory your local texmf tree, e.g., ``/usr/local/texlive/texmf-local/tex/latex/ai2pdf/``
  3. Run ``texhash`` to update your TeX package cache.
 
 At this point you can run ``pdflatex --shell-escape ai2pdf.tex`` to see whether everything works. The output should look like in ``ai2pdf.pdf``.
