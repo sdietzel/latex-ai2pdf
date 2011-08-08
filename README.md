@@ -24,6 +24,19 @@ Look at ``ai2pdf.tex`` for a minimal example. ``ai2pdf`` redefines the ``\includ
 
 **Note:** You need to run ``pdflatex`` with the ``--shell-escape`` parameter when compiling. Otherwise, the package is not able to execute the ``ai2pdf`` conversion tool from within LaTeX.
 
+Using in Teams
+--------------
+
+If you intend to use ``ai2pdf`` in teams where not everyone uses a Mac and
+Illustrator, or where not everyone can be expected to have ``ai2pdf``
+installed, check ``Tools/ai2pdfwrapper.sty``.
+
+The idea is to copy ai2pdfwrapper.sty to the directory where your main latex
+file resides. You can then include the wrapper instead of ``ai2pdf``. The
+wrapper will check whetehr ``ai2pdf`` is available and, if not, output a
+warning message. Compilation continutes though, only the PDF files might be
+out of date.
+
 TODO
 ----
  * Enhance ``ai2pdf`` to recognize whether conversion is *necessary*: The script should check whether a PDF version of a given AI file already exists, and, if so, should only re-export if the file dates differ.

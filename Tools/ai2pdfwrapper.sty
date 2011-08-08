@@ -1,0 +1,6 @@
+\ProvidesPackage{ai2pdfwrapper}
+\IfFileExists{ai2pdf.sty}{%
+\RequirePackage{ai2pdf}%
+}{%
+\PackageWarning{ai2pdfwrapper}{ai2pdf package not found. Install form http://github.com/sdietzel/latex-ai2pdf for full AI to PDF bliss!}
+}
