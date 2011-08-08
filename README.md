@@ -15,10 +15,12 @@ Installation
  2. Put ``ai2pdf.sty`` in your local texmf tree, e.g., ``/usr/local/texlive/texmf-local/tex/latex/ai2pdf``
  3. Run ``texhash`` to update your TeX package cache.
 
+At this point you can run ``pdflatex --shell-escape ai2pdf.tex`` to see whether everything works. The output should look like in ``ai2pdf.pdf``.
+
 Usage
 -----
 
-Look at ``ai2pdf.tex`` for a minimal example. ``ai2pdf`` redefined the ``\includegraphics`` command. Whenever you include a file that exists with a ``.ai`` extension, Adobe Illustrator is called and the file is exported to PDF. You don't need any extra commands in your tex source. Just use ``\includegraphics`` as usual.
+Look at ``ai2pdf.tex`` for a minimal example. ``ai2pdf`` redefines the ``\includegraphics`` command. Whenever you include a file that exists with a ``.ai`` extension, Adobe Illustrator is called and the file is exported to PDF. You don't need any extra commands in your tex source. Just use ``\includegraphics`` as usual.
 
 **Note:** You need to run ``pdflatex`` with the ``--shell-escape`` parameter when compiling. Otherwise, the package is not able to execute the ``ai2pdf`` conversion tool from within LaTeX.
 
